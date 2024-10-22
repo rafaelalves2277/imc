@@ -32,7 +32,7 @@
             // Remove todos os caracteres que não sejam dígitos
             elemento.value = elemento.value.replace(/\D/g, '');
 
-            // Limita a 11 dígitos (DDD + 9 dígitos)
+            // Limita a 11 dígitos
             if (elemento.value.length > 11) {
                 elemento.value = elemento.value.slice(0, 11);
             }
