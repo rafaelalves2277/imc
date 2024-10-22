@@ -24,6 +24,9 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Telefone</title>
     <script>
         function limitarEntrada(elemento) {
             // Remove todos os caracteres que não sejam dígitos
@@ -37,14 +40,13 @@
     </script>
 </head>
 <body>
-    <h1>Cadastro de Telefone</h1>
     <form>
         <label for="tel">Telefone (DDD + 9 dígitos):</label>
         <input type="tel" id="tel" name="tel" oninput="limitarEntrada(this)" maxlength="11" placeholder="(xx) xxxxx-xxxx"><br><br>
-        <input type="submit" value="Cadastrar">
     </form>
 </body>
 </html>
+
   <input type="reset" value="Limpar">
   <input type="submit" value="Enviar">
 </form>
