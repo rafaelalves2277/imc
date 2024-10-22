@@ -21,8 +21,33 @@
   <label for="sexo2">Masculino</label><br>
   <label for="email">E-mail:</label>
   <input type="email" id="email" name="email"><br>
-  <label for="tel">Telefone:</label>
-  <input type="tel" id="tel" name="tel"><br><br>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Telefone</title>
+    <script>
+        function limitarEntrada(elemento) {
+            // Remove todos os caracteres que não sejam dígitos
+            elemento.value = elemento.value.replace(/\D/g, '');
+
+            // Limita a 11 dígitos (DDD + 9 dígitos)
+            if (elemento.value.length > 11) {
+                elemento.value = elemento.value.slice(0, 11);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Cadastro de Telefone</h1>
+    <form>
+        <label for="tel">Telefone (DDD + 9 dígitos):</label>
+        <input type="tel" id="tel" name="tel" oninput="limitarEntrada(this)" maxlength="11" placeholder="(xx) xxxxx-xxxx"><br><br>
+        <input type="submit" value="Cadastrar">
+    </form>
+</body>
+</html>
   <input type="reset" value="Limpar">
   <input type="submit" value="Enviar">
 </form>
