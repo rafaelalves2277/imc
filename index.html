@@ -28,6 +28,7 @@
             width: 20px;
             height: 50px;
             background-color: black;
+            transition: left 0.1s, bottom 0.1s;
         }
 
         #player1 {
@@ -39,6 +40,16 @@
             left: 700px;
             bottom: 50px;
         }
+
+        .attack {
+            animation: punch 0.3s forwards;
+        }
+
+        @keyframes punch {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(20px); }
+            100% { transform: translateX(0); }
+        }
     </style>
 </head>
 <body>
@@ -49,18 +60,17 @@
     <script>
         const player1 = document.getElementById('player1');
         const player2 = document.getElementById('player2');
-        const gameArea = document.getElementById('gameArea');
 
-        let player1Position = { x: 100, y: 350 };
-        let player2Position = { x: 700, y: 350 };
+        let player1Position = { x: 100, y: 50 };
+        let player2Position = { x: 700, y: 50 };
 
         document.addEventListener('keydown', (event) => {
             switch (event.key) {
                 case 'ArrowUp':
-                    movePlayer1(0, -10);
+                    movePlayer1(0, 10);
                     break;
                 case 'ArrowDown':
-                    movePlayer1(0, 10);
+                    movePlayer1(0, -10);
                     break;
                 case 'ArrowLeft':
                     movePlayer1(-10, 0);
@@ -72,10 +82,10 @@
                     attackPlayer1();
                     break;
                 case 'w': // Mover Player 2 para cima
-                    movePlayer2(0, -10);
+                    movePlayer2(0, 10);
                     break;
                 case 's': // Mover Player 2 para baixo
-                    movePlayer2(0, 10);
+                    movePlayer2(0, -10);
                     break;
                 case 'a': // Mover Player 2 para a esquerda
                     movePlayer2(-10, 0);
@@ -112,10 +122,18 @@
         }
 
         function attackPlayer1() {
+            player1.classList.add('attack');
+            setTimeout(() => {
+                player1.classList.remove('attack');
+            }, 300);
             console.log("Player 1 ataca!");
         }
 
         function attackPlayer2() {
+            player2.classList.add('attack');
+            setTimeout(() => {
+                player2.classList.remove('attack');
+            }, 300);
             console.log("Player 2 ataca!");
         }
     </script>
