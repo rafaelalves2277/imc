@@ -1,93 +1,54 @@
 <!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>IFRJ - Curso de Informática para Internet</title>
+</head>
+<body>
+
+<h3>Disciplina de Modelagem de Domínio e Conceitos de Orientação a Objetos</h3>
+<h4>Aula 01 - Atividade Prática</h3>
+
+<form>
+  <label for="nome">Nome:</label>
+  <input type="text" id="nome" name="nome" maxlength="500"><br>
+  <label for="nasc">Data de Nascimento:</label>
+  <input type="date" id="nasc" name="nasc"><br>
+  <label>Sexo:</label>
+  <input type="radio" id="sexo1" name="sexo" value="Feminino">
+  <label for="sexo1">Feminino</label>
+  <input type="radio" id="sexo2" name="sexo" value="Masculino">
+  <label for="sexo2">Masculino</label><br>
+  <label for="email">E-mail:</label>
+  <input type="email" id="email" name="email"><br>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Duelo de Espadas</title>
-    <style>
-        canvas {
-            border: 1px solid black;
-            background-color: #f0f0f0;
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Telefone</title>
+    <script>
+        function limitarEntrada(elemento) {
+            // Remove todos os caracteres que não sejam dígitos
+            elemento.value = elemento.value.replace(/\D/g, '');
+
+            // Limita a 11 dígitos DDD + 9 digitos
+            if (elemento.value.length > 11) {
+                elemento.value = elemento.value.slice(0, 11);
+            }
         }
-    </style>
+    </script>
 </head>
 <body>
-    <canvas id="canvas" width="800" height="600"></canvas>
-    <script>
-        // Variáveis globais
-        var canvas = document.getElementById('canvas');
-        var ctx = canvas.getContext('2d');
-        var fps = 60;
-        var jogador1 = { x: 100, y: 400, vida: 100, espada: false };
-        var jogador2 = { x: 600, y: 400, vida: 100, espada: false };
-
-        // Função principal
-        function atualizar() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            desenharJogadores();
-            verificarColisao();
-            desenharBarrasDeVida();
-            verificarVitoria();
-        }
-
-        function desenharJogadores() {
-            ctx.fillStyle = 'blue';
-            ctx.fillRect(jogador1.x, jogador1.y, 50, 50);
-            ctx.fillStyle = 'red';
-            ctx.fillRect(jogador2.x, jogador2.y, 50, 50);
-            desenharEspadas();
-        }
-
-        function desenharEspadas() {
-            if (jogador1.espada) {
-                ctx.fillStyle = 'gray';
-                ctx.fillRect(jogador1.x + 20, jogador1.y - 30, 10, 30);
-            }
-            if (jogador2.espada) {
-                ctx.fillStyle = 'gray';
-                ctx.fillRect(jogador2.x + 20, jogador2.y - 30, 10, 30);
-            }
-        }
-
-        function verificarColisao() {
-            if (jogador1.espada && jogador1.x < jogador2.x + 50 && jogador1.x + 50 > jogador2.x && jogador1.y < jogador2.y + 50 && jogador1.y + 50 > jogador2.y) {
-                jogador2.vida -= 10;
-            }
-            if (jogador2.espada && jogador2.x < jogador1.x + 50 && jogador2.x + 50 > jogador1.x && jogador2.y < jogador1.y + 50 && jogador2.y + 50 > jogador1.y) {
-                jogador1.vida -= 10;
-            }
-        }
-
-        function desenharBarrasDeVida() {
-            ctx.fillStyle = 'green';
-            ctx.fillRect(10, 10, jogador1.vida, 20);
-            ctx.fillRect(canvas.width - 110, 10, jogador2.vida, 20);
-        }
-
-        function verificarVitoria() {
-            if (jogador1.vida <= 0 || jogador2.vida <= 0) {
-                alert('Jogo acabou!');
-                document.location.reload();
-            }
-        }
-
-        document.addEventListener('keydown', function(event) {
-            switch (event.key) {
-                case 'w': jogador1.y -= 10; break;
-                case 'a': jogador1.x -= 10; break;
-                case 's': jogador1.y += 10; break;
-                case 'd': jogador1.x += 10; break;
-                case 'j': jogador1.espada = true; break;
-                case 'k': jogador1.espada = false; break;
-                case 'ArrowUp': jogador2.y -= 10; break;
-                case 'ArrowLeft': jogador2.x -= 10; break;
-                case 'ArrowDown': jogador2.y += 10; break;
-                case 'ArrowRight': jogador2.x += 10; break;
-                case '1': jogador2.espada = true; break;
-                case '2': jogador2.espada = false; break;
-            }
-        });
-
-        setInterval(atualizar, 1000 / fps);
-    </script>
+    <form>
+        <label for="tel">Telefone (DDD + 9 dígitos):</label>
+        <input type="tel" id="tel" name="tel" oninput="limitarEntrada(this)" maxlength="11" placeholder="(xx) xxxxx-xxxx"><br><br>
+    </form>
 </body>
 </html>
+
+  <input type="reset" value="Limpar">
+  <input type="submit" value="Enviar">
+</form>
+
+<p>Clique no botão "Enviar"</p>
