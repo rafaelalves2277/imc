@@ -1,112 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
- <meta charset="UTF-8">
- <title>Duelo de Espadas</title>
- <style>
-  /* Estilos básicos */
-  canvas {
-   border: 1px solid black;
-  }
- </style>
+    <meta charset="UTF-8">
+    <title>Duelo de Espadas</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            background-color: #f0f0f0;
+        }
+    </style>
 </head>
 <body>
- <canvas id="canvas" width="800" height="600"></canvas>
- <script>
-  // Variáveis globais
-  var canvas = document.getElementById('canvas');
-  var ctx = canvas.getContext('2d');
-  var fps = 60;
-  var jogador1 = { x: 100, y: 100, vida: 100, espada: true };
-  var jogador2 = { x: 600, y: 100, vida: 100, espada: true };
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <script>
+        // Variáveis globais
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var fps = 60;
+        var jogador1 = { x: 100, y: 400, vida: 100, espada: false };
+        var jogador2 = { x: 600, y: 400, vida: 100, espada: false };
 
-  // Função principal
-  function atualizar() {
-   // Limpar canvas
-   ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Função principal
+        function atualizar() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            desenharJogadores();
+            verificarColisao();
+            desenharBarrasDeVida();
+            verificarVitoria();
+        }
 
-   // Desenhar jogadores
-   ctx.fillStyle = 'blue';
-   ctx.fillRect(jogador1.x, jogador1.y, 50, 50);
-   ctx.fillStyle = 'red';
-   ctx.fillRect(jogador2.x, jogador2.y, 50, 50);
+        function desenharJogadores() {
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(jogador1.x, jogador1.y, 50, 50);
+            ctx.fillStyle = 'red';
+            ctx.fillRect(jogador2.x, jogador2.y, 50, 50);
+            desenharEspadas();
+        }
 
-   // Desenhar espadas
-   if (jogador1.espada) {
-    ctx.fillStyle = 'gray';
-    ctx.fillRect(jogador1.x + 25, jogador1.y + 25, 10, 50);
-   }
-   if (jogador2.espada) {
-    ctx.fillStyle = 'gray';
-    ctx.fillRect(jogador2.x + 25, jogador2.y + 25, 10, 50);
-   }
+        function desenharEspadas() {
+            if (jogador1.espada) {
+                ctx.fillStyle = 'gray';
+                ctx.fillRect(jogador1.x + 20, jogador1.y - 30, 10, 30);
+            }
+            if (jogador2.espada) {
+                ctx.fillStyle = 'gray';
+                ctx.fillRect(jogador2.x + 20, jogador2.y - 30, 10, 30);
+            }
+        }
 
-   // Atualizar movimento
-   if (jogador1.espada) {
-    jogador1.x += (jogador1.x < jogador2.x) ? 5 : -5;
-   }
-   if (jogador2.espada) {
-    jogador2.x += (jogador2.x > jogador1.x) ? 5 : -5;
-   }
+        function verificarColisao() {
+            if (jogador1.espada && jogador1.x < jogador2.x + 50 && jogador1.x + 50 > jogador2.x && jogador1.y < jogador2.y + 50 && jogador1.y + 50 > jogador2.y) {
+                jogador2.vida -= 10;
+            }
+            if (jogador2.espada && jogador2.x < jogador1.x + 50 && jogador2.x + 50 > jogador1.x && jogador2.y < jogador1.y + 50 && jogador2.y + 50 > jogador1.y) {
+                jogador1.vida -= 10;
+            }
+        }
 
-   // Verificar colisão
-   if (jogador1.x + 50 > jogador2.x && jogador1.y + 50 > jogador2.y) {
-    jogador1.vida -= 10;
-    jogador2.vida -= 10;
-   }
+        function desenharBarrasDeVida() {
+            ctx.fillStyle = 'green';
+            ctx.fillRect(10, 10, jogador1.vida, 20);
+            ctx.fillRect(canvas.width - 110, 10, jogador2.vida, 20);
+        }
 
-   // Desenhar barras de vida
-   ctx.fillStyle = 'green';
-   ctx.fillRect(10, 10, jogador1.vida, 20);
-   ctx.fillStyle = 'green';
-   ctx.fillRect(canvas.width - 30, 10, jogador2.vida, 20);
+        function verificarVitoria() {
+            if (jogador1.vida <= 0 || jogador2.vida <= 0) {
+                alert('Jogo acabou!');
+                document.location.reload();
+            }
+        }
 
-   // Verificar vitória
-   if (jogadorador1.vida <= 0 || jogador2.vida <= 0) {
-    alert('Jogo acabou!');
-   }
-  }
+        document.addEventListener('keydown', function(event) {
+            switch (event.key) {
+                case 'w': jogador1.y -= 10; break;
+                case 'a': jogador1.x -= 10; break;
+                case 's': jogador1.y += 10; break;
+                case 'd': jogador1.x += 10; break;
+                case 'j': jogador1.espada = true; break;
+                case 'k': jogador1.espada = false; break;
+                case 'ArrowUp': jogador2.y -= 10; break;
+                case 'ArrowLeft': jogador2.x -= 10; break;
+                case 'ArrowDown': jogador2.y += 10; break;
+                case 'ArrowRight': jogador2.x += 10; break;
+                case '1': jogador2.espada = true; break;
+                case '2': jogador2.espada = false; break;
+            }
+        });
 
-  // Função de evento de teclado
-  document.addEventListener('keydown', function(event) {
-   switch (event.key) {
-    case 'w':
-     jogador1.y -= 10;
-     break;
-    case 'a':
-     jogador1.x -= 10;
-     break;
-    case 's':
-     jogador1.y += 10;
-     break;
-    case 'd':
-     jogador1.x += 10;
-     break;
-    case 'j':
-     jogador1.espada = !jogador1.espada;
-     break;
-    case 'k':
-     jogador1.espada = !jogador1.espada;
-     break;
-    case 'ArrowUp':
-     jogador2.y -= 10;
-     break;
-    case 'ArrowLeft':
-     jogador2.x -= 10;
-     break;
-    case 'ArrowDown':
-     jogador2.y += 10;
-     break;
-    case 'ArrowRight':
-     jogador2.x += 10;
-     break;
-    case '1':
-     jogador2.espada = !jogador2.espada;
-     break;
-    case '2':
-     jogador2.espada = !jogador2.espada;
-     break;
-   }
-  });
-
-  // Iniciar jogo
+        setInterval(atualizar, 1000 / fps);
+    </script>
+</body>
+</html>
