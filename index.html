@@ -12,6 +12,7 @@
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
         }
 
         #gameArea {
@@ -25,10 +26,41 @@
 
         .stick-figure {
             position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.1s ease;
+        }
+
+        .head {
             width: 20px;
+            height: 20px;
+            background-color: black;
+            border-radius: 50%;
+        }
+
+        .body {
+            width: 5px;
             height: 50px;
             background-color: black;
-            transition: left 0.1s, bottom 0.1s;
+        }
+
+        .arm {
+            width: 5px;
+            height: 30px;
+            background-color: black;
+            position: absolute;
+            bottom: 30px;
+        }
+
+        .sword {
+            width: 3px;
+            height: 40px;
+            background-color: silver;
+            position: absolute;
+            transform: translateX(-50%) rotate(-30deg);
+            bottom: 30px;
+            display: none;
         }
 
         #player1 {
@@ -47,19 +79,42 @@
 
         @keyframes punch {
             0% { transform: translateX(0); }
-            50% { transform: translateX(20px); }
+            50% { transform: translateX(10px); }
             100% { transform: translateX(0); }
+        }
+
+        .sword-animation {
+            animation: swing 0.5s forwards;
+        }
+
+        @keyframes swing {
+            0% { transform: rotate(-30deg); }
+            100% { transform: rotate(30deg); }
         }
     </style>
 </head>
 <body>
     <div id="gameArea">
-        <div id="player1" class="stick-figure"></div>
-        <div id="player2" class="stick-figure"></div>
+        <div id="player1" class="stick-figure">
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="arm" style="transform: rotate(45deg);"></div>
+            <div class="arm" style="transform: rotate(-45deg); bottom: 0;"></div>
+            <div class="sword" id="sword1"></div>
+        </div>
+        <div id="player2" class="stick-figure">
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="arm" style="transform: rotate(45deg);"></div>
+            <div class="arm" style="transform: rotate(-45deg); bottom: 0;"></div>
+            <div class="sword" id="sword2"></div>
+        </div>
     </div>
     <script>
         const player1 = document.getElementById('player1');
         const player2 = document.getElementById('player2');
+        const sword1 = document.getElementById('sword1');
+        const sword2 = document.getElementById('sword2');
 
         let player1Position = { x: 100, y: 50 };
         let player2Position = { x: 700, y: 50 };
@@ -78,8 +133,11 @@
                 case 'ArrowRight':
                     movePlayer1(10, 0);
                     break;
-                case 'z': // Ataque Player 1
+                case '1': // Ataque Player 1
                     attackPlayer1();
+                    break;
+                case '2': // Puxar espada Player 1
+                    equipSword1();
                     break;
                 case 'w': // Mover Player 2 para cima
                     movePlayer2(0, 10);
@@ -93,8 +151,11 @@
                 case 'd': // Mover Player 2 para a direita
                     movePlayer2(10, 0);
                     break;
-                case 'x': // Ataque Player 2
+                case 'j': // Ataque Player 2
                     attackPlayer2();
+                    break;
+                case 'k': // Puxar espada Player 2
+                    equipSword2();
                     break;
             }
         });
@@ -123,18 +184,40 @@
 
         function attackPlayer1() {
             player1.classList.add('attack');
+            sword1.classList.add('sword-animation');
+            sword1.style.display = 'block';
             setTimeout(() => {
                 player1.classList.remove('attack');
-            }, 300);
+                sword1.classList.remove('sword-animation');
+                sword1.style.display = 'none';
+            }, 500);
             console.log("Player 1 ataca!");
+        }
+
+        function equipSword1() {
+            sword1.style.display = 'block';
+            sword1.style.left = (player1Position.x + 10) + 'px'; // posição relativa ao jogador
+            sword1.style.bottom = (player1Position.y + 20) + 'px'; // acima do corpo
+            console.log("Player 1 puxou a espada!");
         }
 
         function attackPlayer2() {
             player2.classList.add('attack');
+            sword2.classList.add('sword-animation');
+            sword2.style.display = 'block';
             setTimeout(() => {
                 player2.classList.remove('attack');
-            }, 300);
+                sword2.classList.remove('sword-animation');
+                sword2.style.display = 'none';
+            }, 500);
             console.log("Player 2 ataca!");
+        }
+
+        function equipSword2() {
+            sword2.style.display = 'block';
+            sword2.style.left = (player2Position.x - 10) + 'px'; // posição relativa ao jogador
+            sword2.style.bottom = (player2Position.y + 20) + 'px'; // acima do corpo
+            console.log("Player 2 puxou a espada!");
         }
     </script>
 </body>
